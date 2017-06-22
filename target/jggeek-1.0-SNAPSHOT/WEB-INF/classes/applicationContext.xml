@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:aop="http://www.springframework.org/schema/aop"
+       xmlns:tx="http://www.springframework.org/schema/tx"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+           http://www.springframework.org/schema/beans/spring-beans.xsd
+           http://www.springframework.org/schema/context
+           http://www.springframework.org/schema/context/spring-context.xsd
+           http://www.springframework.org/schema/tx
+           http://www.springframework.org/schema/tx/spring-tx.xsd
+           http://www.springframework.org/schema/aop
+           http://www.springframework.org/schema/aop/spring-aop.xsd">
+
+    <!--配置c3p0数据源-->
+    <context:property-placeholder location="classpath:db.properties"></context:property-placeholder>
+    <bean id="dataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource">
+        <property name="user" value="${jdbc.user}"></property>
+        <property name="password" value="${jdbc.password}"></property>
+        <property name="driverClass" value="${jdbc.driverClass}"></property>
+        <property name="jdbcUrl" value="${jdbc.jdbcUrl}"></property>
+
+        <property name="initialPoolSize" value="${jdbc.initPoolSize}"></property>
+        <property name="maxPoolSize" value="${jdbc.maxPoolSize}"></property>
+    </bean>
+
+    <!--配置SessionFactory-->
+    <bean id="sessionFactory" class="org.springframework.orm.hibernate4.LocalSessionFactoryBean">
+        <property name="dataSource" ref="dataSource"></property>
+        <property name="configLocation" value="classpath:hibernate.cfg.xml"></property>
+        <!--映射文件位置-->
+        <property name="mappingLocations"
+                  value="classpath:enties/*.hbm.xml">
+        </property>
+    </bean>
+
+
+    <bean id="hibernateTransactionManager" class="org.springframework.orm.hibernate4.HibernateTransactionManager">
+        <property name="sessionFactory" ref="sessionFactory"></property>
+    </bean>
+    <tx:advice id="txAdvice" transaction-manager="hibernateTransactionManager">
+        <tx:attributes>
+            <tx:method name="get*" read-only="true"/>
+            <tx:method name="*"/>
+        </tx:attributes>
+    </tx:advice>
+    <aop:config>
+        <aop:pointcut id="txPointcut" expression="execution(* service.*.*(..)) || execution(* dao.*.*(..)) || execution(* util.*.*(..))"/>
+        <aop:advisor advice-ref="txAdvice" pointcut-ref="txPointcut"></aop:advisor>
+    </aop:config>
+
+
+    <!--配置一般bean-->
+    <bean id="memberInfo" class="enties.MemberInfo"></bean>
+    <bean id="memberInfoDao" class="dao.MemberInfoDao">
+        <property name="sessionFactory" ref="sessionFactory"></property>
+    </bean>
+    <bean id="memberInfoService" class="service.MemberInfoServiceImpl">
+        <property name="memberInfoDao" ref="memberInfoDao"></property>
+    </bean>
+    <bean id="memberInfoAction" class="controller.MemberInfoAction">
+        <property name="memberInfoService" ref="memberInfoService"></property>
+        <property name="memberInfo" ref="memberInfo"></property>
+    </bean>
+
+    <!---->
+    <bean id="excellentStar" class="enties.ExcellentStar"></bean>
+    <bean id="excellentStarDao" class="dao.ExcellentStarDao">
+        <property name="sessionFactory" ref="sessionFactory"></property>
+    </bean>
+    <bean id="excellentStarService" class="service.ExcellentStarServiceImpl">
+        <property name="excellentStarDao" ref="excellentStarDao"></property>
+    </bean>
+    <bean id="excellentStarAction" class="controller.ExcellentStarAction">
+        <property name="excellentStarService" ref="excellentStarService"></property>
+        <property name="excellentStar" ref="excellentStar"></property>
+    </bean>
+
+    <!---->
+    <bean id="productionInfo" class="enties.ProductionInfo"></bean>
+    <bean id="productionInfoDao" class="dao.ProductionInfoDao">
+        <property name="sessionFactory" ref="sessionFactory"></property>
+    </bean>
+    <bean id="productionInfoService" class="service.ProductionInfoServiceImpl">
+        <property name="productionInfoDao" ref="productionInfoDao"></property>
+    </bean>
+    <bean id="productAction" class="controller.ProductionAction">
+        <property name="productionInfoService" ref="productionInfoService"></property>
+        <property name="productionInfo" ref="productionInfo"></property>
+    </bean>
+
+    <!---->
+    <bean id="studyCenter" class="enties.StudyCenter"></bean>
+    <bean id="studyCenterDao" class="dao.StudyCenterDao">
+        <property name="sessionFactory" ref="sessionFactory"></property>
+    </bean>
+    <bean id="studyCenterService" class="service.StudyCenterServiceImpl">
+        <property name="studyCenterDao" ref="studyCenterDao"></property>
+    </bean>
+    <bean id="studyCenterAction" class="controller.StudyCenterAction">
+       <property name="studyCenterService" ref="studyCenterService"></property>
+        <property name="studyCenter" ref="studyCenter"></property>
+    </bean>
+
+
+    <!---->
+    <bean id="suggest" class="enties.Suggest">
+    </bean>
+    <bean id="suggestDao" class="dao.SuggestDao">
+        <property name="sessionFactory" ref="sessionFactory"></property>
+    </bean>
+    <bean id="suggestService" class="service.SuggestServiceImpl">
+        <property name="suggestDao" ref="suggestDao"></property>
+    </bean>
+    <bean id="suggestAction" class="controller.SuggestAction">
+        <property name="suggestService" ref="suggestService"></property>
+    </bean>
+
+</beans>

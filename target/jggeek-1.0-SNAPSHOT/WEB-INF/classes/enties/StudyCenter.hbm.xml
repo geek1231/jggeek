@@ -1,0 +1,32 @@
+<?xml version='1.0' encoding='utf-8'?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+
+    <class name="enties.StudyCenter" table="study_center">
+        <id name="id" type="java.lang.Integer">
+            <column name="id"></column>
+            <generator class="native"></generator>
+        </id>
+        <property name="stuKind" type="java.lang.String">
+            <column name="stu_kind"></column>
+        </property>
+        <property name="stuName" type="java.lang.String">
+            <column name="stu_name"></column>
+        </property>
+        <property name="stuImgUrl" type="java.lang.String">
+            <column name="stu_img_url"></column>
+        </property>
+        <property name="stuIntr" type="java.lang.String">
+            <column name="stu_intr"></column>
+        </property>
+        <property name="stuReco" type="java.lang.String">
+            <column name="stu_reco"></column>
+        </property>
+        <property name="stuLink" type="java.lang.String">
+            <column name="stu_link"></column>
+        </property>
+    </class>
+
+</hibernate-mapping>

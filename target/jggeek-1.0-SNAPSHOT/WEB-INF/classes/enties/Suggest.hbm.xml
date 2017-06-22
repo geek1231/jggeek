@@ -1,0 +1,25 @@
+<?xml version='1.0' encoding='utf-8'?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+    <class name="enties.Suggest" table="suggest">
+        <id name="id" type="java.lang.Integer">
+            <column name="id"></column>
+            <generator class="native"></generator>
+        </id>
+        <property name="sugName" type="java.lang.String">
+            <column name="sug_name"></column>
+        </property>
+        <property name="sugEmail" type="java.lang.String">
+            <column name="sug_email"></column>
+        </property>
+        <property name="sugPhone" type="java.lang.String">
+            <column name="sug_phone"></column>
+        </property>
+        <property name="sugContent" type="java.lang.String">
+            <column name="sug_content"></column>
+        </property>
+    </class>
+
+</hibernate-mapping>
