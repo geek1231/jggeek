@@ -34,7 +34,6 @@ public class JsonUtil {
             pw.print(jsonArray.toString());
         } catch (IOException e) {
             e.printStackTrace();
-
         }
 
     }
